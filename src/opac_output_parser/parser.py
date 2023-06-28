@@ -34,7 +34,7 @@ but not all call numbers have dates, so not all records will have dates
 in the JSON output.
 '''
 
-STRIP = '\n  ./'
+STRIP = '\n  ./\t'
 
 def argp():
     '''
@@ -91,7 +91,7 @@ class Record(dict):
         if cleandata:
             cleandata = cleandata[0][1].text.strip(STRIP)
             cleandata = list(filter(None, [x.strip(STRIP) for x in cleandata.split('\n')]))
-            if len(cleandata) <=1:
+            if len(cleandata) <=1 and cleandata:
                 cleandata = cleandata[0]
         else:
             cleandata = None
@@ -103,11 +103,13 @@ class Record(dict):
         if the last characters are digits returns them as date.
         '''
         call = self.clean(datatype)
-        try:
-            derived_year = int(call[-4:])
-        except ValueError:
-            derived_year = None
-        return derived_year
+        if call:
+            try:
+                derived_year = int(call[-4:])
+            except ValueError:
+                derived_year = None
+            return derived_year
+        return None
 
 def main():
     '''
