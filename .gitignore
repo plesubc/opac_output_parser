@@ -1,6 +1,8 @@
 tmp/**
 tmp/
 docs/why_no*
+bin/
+pyvenv.cfg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
