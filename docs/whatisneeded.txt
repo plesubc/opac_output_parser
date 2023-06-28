@@ -1,0 +1,3 @@
+Here are the fields Seiji is looking for: "I'm hoping to download, at the minimum, the book titles and permalink (or some way to track back to the original record) in a CSV format (or any format that I can enter into OpenRefine for cleaning). Ideally, I'd like to obtain the two mentioned above and all assigned subject headings(both LCSH and Canadian Subject Headings), publication year and date of record creation."
+12:00
+All but date of record creation should be available.
