@@ -54,6 +54,23 @@ def argp():
                         help='Show version number and exit')
     return parser
 
+
+COUNTS = dict(records_parsed=0,
+              failed_records=0)
+
+def fail_counter(cls):
+    '''Failure counter decorator'''
+    def wrapper(*args, **kwargs):
+        '''Counter for records'''
+        try:
+            inst = cls(*args, **kwargs)
+            COUNTS['records_parsed'] += 1
+            return inst
+        except (TypeError, ValueError):
+            COUNTS['failed_records'] +=1
+            return None
+    return wrapper
+
 class Record(dict):
     '''
     Class representing a bibliographic record
@@ -135,7 +152,12 @@ def main():
     bib_records =[x for x in root.iter('div') if x.attrib.get('class') =='bibliographicData']
     records = dict(records = [])
     for bib_rec in bib_records:
-        records['records'].append(Record(bib_rec))
+        #records['records'].append(Record(bib_rec))
+        records['records'].append(fail_counter(Record)(bib_rec))
+
+    records['total_records'] = len(bib_records)
+    records.update(COUNTS)
+    records['records'] = list(filter(None, records['records']))
 
     with open(args.outfile, 'w', encoding='utf-8', newline='') as out:
         json.dump(records, out)
